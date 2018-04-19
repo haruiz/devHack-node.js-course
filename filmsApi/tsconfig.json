@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "es6",//API javascript
+        "module": "commonjs",//modules resolution
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "outDir": "dist/"
+    },
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
