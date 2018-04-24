@@ -1,9 +1,18 @@
 {
     "server":{
         "port": 8080,
-        "host": "0.0.0.0"
+        "host": "0.0.0.0",
+        "jwtSecret": "MBUQsYpvDcry8+KEa1juCMubkB601Z29wpAJRvBp5dNy3ZIz/jYbzyiTd2T9/qTsAnHk7/4O/AXiu7HoMYzIuFnqz4bC9mPgSRwgya2fsv+h7BI9uqs0StpFuQR58BGffuEOwGu8Nn2rinDfhE7278INohHNK4rs2YQ/b+EsUzs5xGsuOLpdfYpwK7iGtF4LMlibbuaHzVqTKGK6hjs/Rs3i/IPuAUFmV80DzHTGylfGTLpdtWIxb/yv7uk8fNO18UjIlGhFuiJ04KnbgG9hG/C53qxc4rkT9pDo+3vQmVw5+xqnZOzFnpj4noaTPAMXmIN8ZcGCIOKsrfYRrNt29A==",
+        "jwtExpiration": "18h"
     },
     "database":{
-
+        "port": 3367,
+        "host": "127.0.0.1",
+        "db": "sakila",
+        "provider": "mysql",
+        "user": "root",
+        "password": "semill@s",
+        "charset": "utf8"
+       
     }
 }

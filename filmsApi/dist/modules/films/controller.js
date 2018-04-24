@@ -7,10 +7,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const hapi_decorators_1 = require("hapi-decorators");
+const boom = require("boom");
 const joi = require("joi");
+const models_1 = require("./../../models");
+const status = require("hapi-status");
 let FilmController = class FilmController {
     fetchById(request, reply) {
-        return reply(request.params["id"]);
+        new models_1.Film({ film_id: request.params["id"] })
+            .fetch()
+            .then((model) => reply(model ? model.toJSON() : status.noContent(reply, "Film not found")))
+            .catch(err => reply(boom.notFound(err.message)));
+    }
+    save(request, reply) {
+        new models_1.Country(request.payload)
+            .save()
+            .then((model) => reply(model ? model.toJSON() : boom.notFound()))
+            .catch(err => reply(boom.notFound(err.message)));
+    }
+    deleteById(request, reply) {
+        new models_1.Country({ id: request.params["id"] })
+            .destroy()
+            .then((model) => reply(model ? model.toJSON() : boom.notFound()))
+            .catch(err => reply(boom.notFound(err.message)));
+    }
+    fetchAll(request, reply) {
+        models_1.Film.fetchAll()
+            .then((result) => reply(result.toArray()));
     }
 };
 __decorate([
@@ -30,6 +52,50 @@ __decorate([
     }),
     hapi_decorators_1.get("/{id}")
 ], FilmController.prototype, "fetchById", null);
+__decorate([
+    hapi_decorators_1.config({
+        tags: ["api", "films"],
+        description: "Use this method to save a film",
+        notes: "this method return the film just recorded",
+        validate: {
+            payload: joi.object({
+                country: joi.string().required(),
+            }).label("payload")
+        },
+        plugins: {
+            'hapi-swagger': {
+                payloadType: 'form'
+            }
+        }
+    }),
+    hapi_decorators_1.post("/")
+], FilmController.prototype, "save", null);
+__decorate([
+    hapi_decorators_1.config({
+        tags: ["api", "films"],
+        description: "Use this method to delete a film",
+        notes: "this method return the film just deleted",
+        validate: {
+            params: {
+                id: joi.number().integer().required(),
+            }
+        },
+        plugins: {
+            'hapi-swagger': {
+                payloadType: 'form'
+            }
+        }
+    }),
+    hapi_decorators_1.route("delete", "/{id}")
+], FilmController.prototype, "deleteById", null);
+__decorate([
+    hapi_decorators_1.config({
+        tags: ["api", "films"],
+        description: "Use this method to fetch all the films",
+        notes: "this method return the list of films"
+    }),
+    hapi_decorators_1.get("/")
+], FilmController.prototype, "fetchAll", null);
 FilmController = __decorate([
     hapi_decorators_1.controller("/api/films")
 ], FilmController);

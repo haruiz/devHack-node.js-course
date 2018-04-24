@@ -13,9 +13,18 @@ const configProvider = new nconf.Provider(<nconf.IOptions>{
 export interface IServerConfig{
     port: number;
     host: string;
+    jwtSecret: string;
+    jwtExpiration: string;
 }
 
 export interface IDatabaseConfig{
+    port: number;
+    db: string;
+    host: string;
+    provider: string;
+    user: string;
+    password: string;
+    charset: string;
 }
 
 

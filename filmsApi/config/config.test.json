@@ -1,5 +1,14 @@
 {
     "server":{
-        "port": 8080
+        "port": 8080,
+        "host": "0.0.0.0"
+    },
+    "database":{
+        "port": 3367,
+        "host": "127.0.0.1",
+        "provider": "mysql",
+        "user": "root",
+        "password": "semill@s",
+        "charset": "utf8"
     }
 }

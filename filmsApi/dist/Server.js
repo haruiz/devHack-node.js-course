@@ -13,6 +13,7 @@ const path = require("path");
 const util_1 = require("util");
 const Swagger_1 = require("./Swagger");
 const fs = require("fs");
+const Auth_1 = require("./Auth");
 const readDirAsync = util_1.promisify(fs.readdir);
 function init(config) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -21,11 +22,21 @@ function init(config) {
         yield server.register([
             require("inert"),
             require("vision"),
-            require("blipp"), {
+            require("blipp"),
+            require("hapi-auth-jwt2"),
+            {
                 register: require("hapi-swagger"),
                 options: Swagger_1.default
             }
         ]);
+        server.auth.strategy("jwt", "jwt", {
+            key: config.jwtSecret,
+            validateFunc: Auth_1.default,
+            verifyOptions: {
+                algorithms: ['HS256']
+            }
+        });
+        server.auth.default("jwt");
         server.route({
             config: {
                 tags: ["api", "home"],

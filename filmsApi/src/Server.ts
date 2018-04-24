@@ -5,7 +5,8 @@ import { promisify, format } from "util";
 import { IDatabaseConfig, IServerConfig } from "./Config";
 import Swagger from "./Swagger";
 import * as fs from "fs";
- const readDirAsync = promisify(fs.readdir);
+import validateFunc from "./Auth";
+const readDirAsync = promisify(fs.readdir);
 
 export async function init(config: IServerConfig) : Promise<hapi.Server>{
     
@@ -15,10 +16,22 @@ export async function init(config: IServerConfig) : Promise<hapi.Server>{
     await server.register([
         require("inert"),
         require("vision"),
-        require("blipp"),{
+        require("blipp"),
+        require("hapi-auth-jwt2"),
+        {
        register: require("hapi-swagger"),
        options: Swagger
     }]);
+
+    server.auth.strategy("jwt", "jwt", {
+        key: config.jwtSecret,
+        validateFunc:validateFunc,
+        verifyOptions:{
+            algorithms: ['HS256'] 
+        }
+    });
+
+    server.auth.default("jwt");
 
     server.route(<hapi.IRouteConfiguration>{
                 config:{
@@ -49,6 +62,8 @@ export async function init(config: IServerConfig) : Promise<hapi.Server>{
            }
        })
     });
+
+    
 
     await server.start();
     return server;      
