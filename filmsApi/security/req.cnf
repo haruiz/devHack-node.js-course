@@ -1,0 +1,20 @@
+[req]
+distinguished_name = dev
+x509_extensions = v3_req
+prompt = no
+default_md = sha256
+[dev]
+C = US
+ST = RandomState
+L = RandomCity
+O = RandomOrganization
+OU = RandomOrganizationUnit 
+CN = www.localhost.com
+[v3_req]
+keyUsage = critical, digitalSignature, keyAgreement,keyEncipherment,dataEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = www.localhost.com
+DNS.2 = localhost.com
+DNS.3 = localhost

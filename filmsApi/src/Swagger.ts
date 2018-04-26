@@ -10,6 +10,13 @@ export default{
             email: "henry.ruiz@devhack.com"
         }
     },
+    securityDefinitions: {
+        'jwt': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
     grouping: "tags",
     sortEndpoints: "ordered"
 

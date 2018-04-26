@@ -4,6 +4,6 @@ import notifier = require("node-notifier");
 
 (async function(){
  const server = await Server.init(Config.getServerConfig());
- notifier.notify(`the server is running at port ${server.info.port}`);
+ notifier.notify(`the server is running at port ${server.connections[0].info.port}`);
 })();
 

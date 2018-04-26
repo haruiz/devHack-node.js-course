@@ -24,8 +24,8 @@ export default class UserController implements Controller{
     @config({
         auth: false,
         tags: ["api","users"],
-        description: "Use this method to save a film",
-        notes: "this method return the film just recorded",
+        description: "Use this method to generate a token",
+        notes: "this method return un token",
         validate:{
             payload: joi.object({
                userName: joi.string().required(),

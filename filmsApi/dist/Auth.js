@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const models_1 = require("./models");
 function validate(decoded, request, cb) {
     new models_1.User({
-        staff_id: decoded.staff_id
+        staff_id: decoded.id
     })
         .fetch()
         .then((usr) => {

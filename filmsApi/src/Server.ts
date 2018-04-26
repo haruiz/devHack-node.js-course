@@ -7,12 +7,19 @@ import Swagger from "./Swagger";
 import * as fs from "fs";
 import validateFunc from "./Auth";
 const readDirAsync = promisify(fs.readdir);
+import * as joi from "joi";
 
 export async function init(config: IServerConfig) : Promise<hapi.Server>{
     
+    let ssl ={
+        key: fs.readFileSync(path.resolve("security/cert.key")),
+        cert: fs.readFileSync(path.resolve("security/cert.pem")),
+    };
+
     let server = new hapi.Server();
-    server.connection({ port: config.port, host: config.host });    
-    
+    server.connection({ address: "0.0.0.0" , port: 80})
+    server.connection({ address: "0.0.0.0" , port: 443, tls: ssl});
+
     await server.register([
         require("inert"),
         require("vision"),
@@ -35,9 +42,15 @@ export async function init(config: IServerConfig) : Promise<hapi.Server>{
 
     server.route(<hapi.IRouteConfiguration>{
                 config:{
+                auth: "jwt",
                 tags: ["api","home"],
                 description: "This is just a test",
                 notes: "return a hello world message",
+                /*validate:{
+                    headers: joi.object({
+                        "authorization": joi.string().required().description("please include the token")
+                    }).unknown()
+                },*/
                 plugins:{
                     "hapi-swagger":{
                         responseMessages: [

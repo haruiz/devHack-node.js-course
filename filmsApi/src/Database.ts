@@ -14,5 +14,5 @@ let knex : Knex = Knex({
 }
 });
 
-export default Bookshelf(knex);//export bookshelf instance
+let orm = Bookshelf(knex); export default orm;//export bookshelf instance
 

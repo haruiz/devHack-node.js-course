@@ -14,7 +14,7 @@ const notifier = require("node-notifier");
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         const server = yield Server.init(Config.getServerConfig());
-        notifier.notify(`the server is running at port ${server.info.port}`);
+        notifier.notify(`the server is running at port ${server.connections[0].info.port}`);
     });
 })();
 //# sourceMappingURL=index.js.map

@@ -3,7 +3,7 @@ import { Model } from "bookshelf";
 
 export default function validate(decoded, request, cb ){
     new User({
-        staff_id: decoded.staff_id
+        staff_id: decoded.id
     })
     .fetch()
     .then((usr: Model<any>) =>{

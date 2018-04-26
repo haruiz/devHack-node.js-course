@@ -17,8 +17,13 @@ const Auth_1 = require("./Auth");
 const readDirAsync = util_1.promisify(fs.readdir);
 function init(config) {
     return __awaiter(this, void 0, void 0, function* () {
+        let ssl = {
+            key: fs.readFileSync(path.resolve("security/cert.key")),
+            cert: fs.readFileSync(path.resolve("security/cert.pem")),
+        };
         let server = new hapi.Server();
-        server.connection({ port: config.port, host: config.host });
+        server.connection({ address: "0.0.0.0", port: 80 });
+        server.connection({ address: "0.0.0.0", port: 443, tls: ssl });
         yield server.register([
             require("inert"),
             require("vision"),
@@ -39,9 +44,15 @@ function init(config) {
         server.auth.default("jwt");
         server.route({
             config: {
+                auth: "jwt",
                 tags: ["api", "home"],
                 description: "This is just a test",
                 notes: "return a hello world message",
+                /*validate:{
+                    headers: joi.object({
+                        "authorization": joi.string().required().description("please include the token")
+                    }).unknown()
+                },*/
                 plugins: {
                     "hapi-swagger": {
                         responseMessages: [

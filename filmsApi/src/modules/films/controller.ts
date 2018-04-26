@@ -47,7 +47,9 @@ export default class FilmController implements Controller{
         validate:{
             payload: joi.object({
                country: joi.string().required(),
-
+               file: joi.any()
+               .meta({ swaggerType: 'file' })
+               .description('json file')
             }).label("payload")
         },
         plugins: {
@@ -95,8 +97,17 @@ export default class FilmController implements Controller{
     })
     @get("/")
     fetchAll(request: hapi.Request, reply: hapi.IReply){
-        Film.fetchAll()
-            .then((result)=> reply(result.toArray()));  
+        let userAuthenticated = request.auth.credentials;
+        console.log(userAuthenticated);
+        if(userAuthenticated.active == 1){
+            Film
+            .fetchAll()
+                .then((result)=> reply(
+                    result.toArray()));  
+        }
+        else{
+            return reply(boom.methodNotAllowed("user inactive"));
+        }
         
     }
 

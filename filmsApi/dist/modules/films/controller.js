@@ -31,8 +31,16 @@ let FilmController = class FilmController {
             .catch(err => reply(boom.notFound(err.message)));
     }
     fetchAll(request, reply) {
-        models_1.Film.fetchAll()
-            .then((result) => reply(result.toArray()));
+        let userAuthenticated = request.auth.credentials;
+        console.log(userAuthenticated);
+        if (userAuthenticated.active == 1) {
+            models_1.Film
+                .fetchAll()
+                .then((result) => reply(result.toArray()));
+        }
+        else {
+            return reply(boom.methodNotAllowed("user inactive"));
+        }
     }
 };
 __decorate([
@@ -60,6 +68,9 @@ __decorate([
         validate: {
             payload: joi.object({
                 country: joi.string().required(),
+                file: joi.any()
+                    .meta({ swaggerType: 'file' })
+                    .description('json file')
             }).label("payload")
         },
         plugins: {

@@ -14,5 +14,6 @@ let knex = Knex({
         charset: config.charset
     }
 });
-exports.default = Bookshelf(knex); //export bookshelf instance
+let orm = Bookshelf(knex);
+exports.default = orm; //export bookshelf instance
 //# sourceMappingURL=Database.js.map
